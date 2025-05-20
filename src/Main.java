@@ -8,8 +8,9 @@ public class Main {
         String read_data = read("C:\\Users\\48258003\\IdeaProjects\\file compressor and decompressor\\src\\data_raw.txt");
         System.out.println(read_data); //prints read data
         String compressed_data = compress(read_data); //compresses the read data
+        String decompressed_data = decompress(compressed_data);
         //System.out.println(compressed_data); //prints compressed data
-        write("compressed_data",compressed_data);
+        write("decompressed data",decompressed_data);
     }
     public static String compress(String data){
         int n = data.length();
@@ -24,12 +25,24 @@ public class Main {
                 count = 1; // Reset count for the new character
             }
         }
-        CompressedStringBuilder.append(count).append(data.charAt(n - 1));
+        CompressedStringBuilder.append(count).append(data.charAt(n - 1));//finishes the very last character
         return CompressedStringBuilder.toString();
     }
-    public static void decompress(String str){
+    public static String decompress(String CompressedData){
+        StringBuilder decompressed_data = new StringBuilder();
+        int numStart = 0;
+        for(int i = 0; i < CompressedData.length(); i++) {
+            if(Character.isDigit(CompressedData.charAt(i))) {
+                continue;
+            }
+            int count = Integer.parseInt(CompressedData.substring(numStart, i));
+            decompressed_data.append(String.valueOf(CompressedData.charAt(i)).repeat(count));
+            numStart = i + 1;
 
+            }
+        return CompressedData;
     }
+
     public static String read(String File_name) {
         File MyObj = new File(File_name);
         try {
@@ -82,4 +95,3 @@ public class Main {
         writer.close();
     }
 }
-//known bugs does not compress very last character
